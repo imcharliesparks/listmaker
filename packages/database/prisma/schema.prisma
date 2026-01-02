@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  username  String?
+  role      UserRole @default(USER)
+  balance   Int      @default(10000) // Starting chips
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bets         Bet[]
+  transactions Transaction[]
+
+  @@index([clerkId])
+  @@index([email])
+}
+
+enum MatchStatus {
+  UPCOMING
+  LIVE
+  FINISHED
+  CANCELLED
+}
+
+model Match {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  homeTeam    String
+  awayTeam    String
+  startTime   DateTime
+  status      MatchStatus  @default(UPCOMING)
+  homeOdds    Float        @default(2.0)
+  awayOdds    Float        @default(2.0)
+  drawOdds    Float?
+  result      String?      // e.g., "HOME", "AWAY", "DRAW"
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  bets Bet[]
+
+  @@index([status])
+  @@index([startTime])
+}
+
+enum BetStatus {
+  PENDING
+  WON
+  LOST
+  CANCELLED
+  REFUNDED
+}
+
+enum BetOutcome {
+  HOME
+  AWAY
+  DRAW
+}
+
+model Bet {
+  id        String     @id @default(cuid())
+  userId    String
+  matchId   String
+  amount    Int
+  odds      Float
+  outcome   BetOutcome
+  status    BetStatus  @default(PENDING)
+  payout    Int?       // Calculated payout if won
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  match Match @relation(fields: [matchId], references: [id])
+
+  @@index([userId])
+  @@index([matchId])
+  @@index([status])
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  BET_PLACED
+  BET_WON
+  BET_REFUND
+}
+
+model Transaction {
+  id        String          @id @default(cuid())
+  userId    String
+  type      TransactionType
+  amount    Int
+  balance   Int             // Balance after transaction
+  reference String?         // e.g., betId
+  createdAt DateTime        @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
+}

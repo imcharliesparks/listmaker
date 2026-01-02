@@ -1,0 +1,36 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.9.3",
+    "@repo/database": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@tanstack/react-query": "^5.62.8",
+    "@trpc/client": "^11.0.0-rc.665",
+    "@trpc/react-query": "^11.0.0-rc.665",
+    "@trpc/server": "^11.0.0-rc.665",
+    "next": "^15.1.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "superjson": "^2.2.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0-beta.7",
+    "@types/node": "^22",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "eslint": "^9",
+    "eslint-config-next": "^15.1.4",
+    "tailwindcss": "^4.0.0-beta.7",
+    "typescript": "^5.6.3"
+  }
+}
