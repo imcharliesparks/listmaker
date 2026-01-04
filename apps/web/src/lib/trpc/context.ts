@@ -1,7 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
+import type { Context as ApiContext } from "@repo/api";
 import { prisma } from "@repo/database";
 
-export async function createTRPCContext() {
+export async function createTRPCContext(): Promise<ApiContext> {
   const session = await auth();
 
   // Auto-create user if authenticated but not in DB
@@ -27,4 +28,4 @@ export async function createTRPCContext() {
   };
 }
 
-export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;

@@ -1,6 +1,6 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { router, publicProcedure } from "../server";
-import { TRPCError } from "@trpc/server";
 
 export const matchesRouter = router({
   getAvailable: publicProcedure

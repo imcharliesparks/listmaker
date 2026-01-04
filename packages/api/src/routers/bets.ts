@@ -1,6 +1,6 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { router, protectedProcedure } from "../server";
-import { TRPCError } from "@trpc/server";
 
 export const betsRouter = router({
   place: protectedProcedure
@@ -12,7 +12,6 @@ export const betsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // Check if user has sufficient balance
       if (ctx.user.balance < input.amount) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -20,7 +19,6 @@ export const betsRouter = router({
         });
       }
 
-      // Get match and verify it's bettable
       const match = await ctx.prisma.match.findUnique({
         where: { id: input.matchId },
       });
@@ -39,7 +37,6 @@ export const betsRouter = router({
         });
       }
 
-      // Get odds based on outcome
       const odds =
         input.outcome === "HOME"
           ? match.homeOdds
@@ -54,9 +51,7 @@ export const betsRouter = router({
         });
       }
 
-      // Create bet and transaction in a transaction
       const bet = await ctx.prisma.$transaction(async (tx) => {
-        // Create bet
         const newBet = await tx.bet.create({
           data: {
             userId: ctx.user.id,
@@ -68,13 +63,11 @@ export const betsRouter = router({
           },
         });
 
-        // Update user balance
         await tx.user.update({
           where: { id: ctx.user.id },
           data: { balance: { decrement: input.amount } },
         });
 
-        // Create transaction record
         await tx.transaction.create({
           data: {
             userId: ctx.user.id,
@@ -171,7 +164,6 @@ export const betsRouter = router({
         });
       }
 
-      // Cancel bet and refund in a transaction
       await ctx.prisma.$transaction(async (tx) => {
         await tx.bet.update({
           where: { id: input.betId },

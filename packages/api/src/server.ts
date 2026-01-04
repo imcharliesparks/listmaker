@@ -9,7 +9,6 @@ const t = initTRPC.context<Context>().create({
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-// Protected procedure - requires authentication
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session?.userId || !ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -23,7 +22,6 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   });
 });
 
-// Admin procedure - requires admin role
 export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   if (ctx.user.role !== "ADMIN") {
     throw new TRPCError({ code: "FORBIDDEN" });

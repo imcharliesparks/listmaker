@@ -1,12 +1,11 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { router, adminProcedure } from "../server";
-import { TRPCError } from "@trpc/server";
 
 export const adminRouter = router({
   importPlaceholder: adminProcedure
     .input(z.object({ data: z.string() }))
     .mutation(async () => {
-      // Placeholder for importing data
       return { success: true, message: "Import placeholder - not implemented" };
     }),
 
@@ -70,7 +69,6 @@ export const adminRouter = router({
   deleteMatch: adminProcedure
     .input(z.object({ matchId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      // Check if match has any bets
       const betsCount = await ctx.prisma.bet.count({
         where: { matchId: input.matchId },
       });
@@ -120,9 +118,7 @@ export const adminRouter = router({
         });
       }
 
-      // Settle all bets in a transaction
       await ctx.prisma.$transaction(async (tx) => {
-        // Update match status and result
         await tx.match.update({
           where: { id: input.matchId },
           data: {
@@ -131,12 +127,10 @@ export const adminRouter = router({
           },
         });
 
-        // Process each bet
         for (const bet of match.bets) {
           const won = bet.outcome === input.result;
           const payout = won ? Math.floor(bet.amount * bet.odds) : 0;
 
-          // Update bet status
           await tx.bet.update({
             where: { id: bet.id },
             data: {
@@ -146,7 +140,6 @@ export const adminRouter = router({
           });
 
           if (won) {
-            // Update user balance
             const user = await tx.user.findUnique({
               where: { id: bet.userId },
             });
@@ -157,7 +150,6 @@ export const adminRouter = router({
                 data: { balance: { increment: payout } },
               });
 
-              // Create transaction record
               await tx.transaction.create({
                 data: {
                   userId: bet.userId,
