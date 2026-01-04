@@ -40,27 +40,21 @@ bun install
 
 ### 2. Environment Setup
 
-Create `.env` files in the following locations:
+Create a root `.env` file based on `.env.example`:
 
-**`packages/database/.env`**
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/listmaker?schema=public"
-```
 
-**`apps/web/.env.local`**
-```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/listmaker?schema=public"
-
-# Clerk Authentication
+# Clerk (web)
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
 CLERK_SECRET_KEY=sk_test_xxx
-
-# Clerk URLs
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
+
+# Clerk (expo)
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
 ```
 
 ### 3. Database Setup
@@ -90,6 +84,8 @@ The application will be available at:
 ### Root Level
 
 - `bun dev` - Start all apps in development mode
+- `bun dev:web` - Start only the Next.js web app
+- `bun dev:native` - Start only the Expo native app
 - `bun build` - Build all apps and packages
 - `bun lint` - Lint all packages
 - `bun type-check` - Type check all packages
@@ -201,10 +197,10 @@ The application will be available at:
 
 ## 📚 Development Tips
 
-1. **Adding a new tRPC route**: Create in `apps/web/src/lib/trpc/routers/`
+1. **Adding a new tRPC route**: Create in `packages/api/src/routers/`
 2. **Database changes**: Update `packages/database/prisma/schema.prisma`, then run `bun db:push`
 3. **New UI component**: Add to `packages/ui/src/components/`
-4. **Environment variables**: Add to both `.env.example` files
+4. **Environment variables**: Add to `.env.example` at the repo root
 
 ## 🐛 Troubleshooting
 
@@ -220,7 +216,7 @@ bun type-check
 ```
 
 ### Database Connection Issues
-- Verify `DATABASE_URL` in both `.env` files
+- Verify `DATABASE_URL` in the root `.env`
 - Ensure PostgreSQL is running
 - Check connection string format
 
