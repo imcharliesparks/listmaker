@@ -108,44 +108,18 @@ The application will be available at:
 
 ### Authentication
 - Clerk-based authentication
-- Protected routes (dashboard, admin)
-- Automatic user creation with 10,000 starting chips
+- Protected routes (dashboard)
+- Automatic user sync on first sign-in
 
 ### Database Models
-- **User**: Clerk ID, email, username, role, balance
+- **User**: Clerk ID, email, display name, profile photo
+- **List**: Title, description, privacy, cover image
+- **Item**: URL metadata, position, optional scraped fields
 
-### tRPC API Routes
-
-*NOTE: These routes need to be removed and are brought over from a similar project
-#### Wallet Router
-- `wallet.getBalance` - Get user balance
-- `wallet.getTransactions` - Get transaction history (paginated)
-
-#### Bets Router
-- `bets.place` - Place a new bet
-- `bets.list` - List user bets (with filtering)
-- `bets.getById` - Get specific bet details
-- `bets.cancel` - Cancel a pending bet
-
-#### Matches Router
-- `matches.getAvailable` - Get upcoming/live matches
-- `matches.getById` - Get match details
-- `matches.list` - List all matches (with filtering)
-- `matches.getOdds` - Get match odds
-
-#### Admin Router (Admin only)
-- `admin.createMatch` - Create new match
-- `admin.updateMatch` - Update match details
-- `admin.deleteMatch` - Delete match (if no bets)
-- `admin.settleMatch` - Settle match and process payouts
-- `admin.importPlaceholder` - Placeholder for data import
-
-### Real-time Features
-- SSE endpoint at `/api/realtime/events` with heartbeat
+### API
+- REST backend for users, lists, and items (see backend spec)
 
 ### UI Components
-- `MatchCard` - Display match with betting options
-- `LiveMatchCard` - Display live match (betting disabled)
 - ShadCN-based components (Button, Card, etc.)
 - React Native Reusables for Native UI
 
@@ -156,7 +130,7 @@ The application will be available at:
 - **Styling**: Tailwind CSS v4
 - **Auth**: Clerk
 - **Database**: PostgreSQL + Prisma
-- **API**: tRPC with React Query
+- **API**: Express REST backend (see backend spec)
 - **Serialization**: SuperJSON
 - **Package Manager**: Bun
 - **Monorepo**: Turborepo
@@ -165,39 +139,27 @@ The application will be available at:
 
 ### User
 - Auto-created on first login
-- Starting balance: 10,000 chips
-- Roles: USER, ADMIN
+- Stores Clerk ID, email, and profile details
 
-### Match
-- Status: UPCOMING, LIVE, FINISHED, CANCELLED
-- Odds for home/away/draw
-- Settlement tracking
+### List
+- Title, description, privacy flag, optional cover image
 
-### Bet
-- Status: PENDING, WON, LOST, CANCELLED, REFUNDED
-- Automatic balance deduction on placement
-- Automatic payout on win
-
-### Transaction
-- Types: DEPOSIT, WITHDRAWAL, BET_PLACED, BET_WON, BET_REFUND
-- Complete audit trail
+### Item
+- URL metadata, source type, and ordering position
 
 ## 🔐 Security
 
-- Clerk middleware protects `/dashboard/*` and `/admin/*` routes
-- Role-based access control for admin functions
-- Server-side validation on all tRPC procedures
+- Clerk middleware protects `/dashboard/*` routes
 - Protected database mutations
 
 ## 🌐 Pages
 
 - `/` - Landing page with authentication
-- `/dashboard` - User dashboard with match listings and betting
-- `/admin` - Admin dashboard with match management (server-rendered)
+- `/dashboard` - User dashboard with lists and items
 
 ## 📚 Development Tips
 
-1. **Adding a new tRPC route**: Create in `packages/api/src/routers/`
+1. **Adding a new API route**: Follow the backend spec for users, lists, and items
 2. **Database changes**: Update `packages/database/prisma/schema.prisma`, then run `bun db:push`
 3. **New UI component**: Add to `packages/ui/src/components/`
 4. **Environment variables**: Add to `.env.example` at the repo root
