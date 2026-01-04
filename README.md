@@ -1,6 +1,6 @@
-# ListMaker - Modern Sports Betting Platform
+# ListMaker - Modern listmaking application for keeping track of everything you love online.
 
-A full-stack sports betting platform built with Bun, Turborepo, Next.js 15, tRPC, Prisma, and Clerk authentication.
+A full-stack list keeping platform built with Bun, Turborepo, Next.js 15, tRPC, Prisma, and Clerk authentication.
 
 ## 🏗️ Project Structure
 
@@ -117,12 +117,10 @@ The application will be available at:
 
 ### Database Models
 - **User**: Clerk ID, email, username, role, balance
-- **Match**: Sports matches with status, odds, and results
-- **Bet**: User bets with outcomes and status tracking
-- **Transaction**: Wallet transaction history
 
 ### tRPC API Routes
 
+*NOTE: These routes need to be removed and are brought over from a similar project
 #### Wallet Router
 - `wallet.getBalance` - Get user balance
 - `wallet.getTransactions` - Get transaction history (paginated)
@@ -153,6 +151,7 @@ The application will be available at:
 - `MatchCard` - Display match with betting options
 - `LiveMatchCard` - Display live match (betting disabled)
 - ShadCN-based components (Button, Card, etc.)
+- React Native Reusables for Native UI
 
 ## 🎨 Tech Stack
 
