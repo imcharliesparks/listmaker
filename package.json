@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=web",
+    "dev:web:server": "turbo run dev --filter=server --filter=web",
     "dev:server": "turbo run dev --filter=server",
+    "dev:native:server": "turbo run dev --filter=server --filter=native",
     "dev:native": "turbo run dev --filter=native",
     "build": "turbo run build",
     "lint": "turbo run lint",
