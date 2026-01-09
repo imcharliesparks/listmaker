@@ -16,7 +16,7 @@ model User {
   displayName String?  @map("display_name") @db.VarChar(255)
   photoUrl    String?  @map("photo_url") @db.Text
   createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
 
   lists List[]
 
@@ -32,10 +32,11 @@ model List {
   isPublic    Boolean  @default(false) @map("is_public")
   coverImage  String?  @map("cover_image") @db.Text
   createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
 
   user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   items Item[]
+  ingestionJobs IngestionJob[]
 
   @@index([userId], map: "idx_lists_user_id")
   @@map("lists")
@@ -48,15 +49,39 @@ model Item {
   title        String?  @db.VarChar(500)
   description  String?  @db.Text
   thumbnailUrl String?  @map("thumbnail_url") @db.Text
+  videoUrl     String?  @map("video_url") @db.Text
   sourceType   String?  @map("source_type") @db.VarChar(50)
   metadata     Json?    @db.JsonB
   position     Int      @default(0)
   createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
 
   list List @relation(fields: [listId], references: [id], onDelete: Cascade)
+  ingestionJobs IngestionJob[]
 
   @@index([listId], map: "idx_items_list_id")
   @@index([sourceType], map: "idx_items_source_type")
   @@map("items")
+}
+
+model IngestionJob {
+  id         Int      @id @default(autoincrement())
+  listId     Int      @map("list_id")
+  userId     String   @map("user_id") @db.VarChar(128)
+  url        String   @db.Text
+  status     String   @db.VarChar(32)
+  sourceType String?  @map("source_type") @db.VarChar(50)
+  metadata   Json?    @db.JsonB
+  error      String?  @db.Text
+  itemId     Int?     @map("item_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  list List  @relation(fields: [listId], references: [id], onDelete: Cascade)
+  item Item? @relation(fields: [itemId], references: [id], onDelete: SetNull)
+
+  @@index([userId], map: "idx_ingestion_jobs_user_id")
+  @@index([listId], map: "idx_ingestion_jobs_list_id")
+  @@index([status], map: "idx_ingestion_jobs_status")
+  @@map("ingestion_jobs")
 }

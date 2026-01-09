@@ -3,6 +3,7 @@ import { getAuth } from "@clerk/express";
 import pool from "../config/database.js";
 import urlMetadataService from "../services/urlMetadataService.js";
 import { ensureUserExists } from "../utils/ensureUser.js";
+import { toJsonbParam } from "../utils/toJsonbParam.js";
 
 export const addItem = async (req: Request, res: Response) => {
   try {
@@ -37,8 +38,8 @@ export const addItem = async (req: Request, res: Response) => {
     const nextPosition = positionResult.rows[0].next_position;
 
     const query = `
-      INSERT INTO items (list_id, url, title, description, thumbnail_url, source_type, metadata, position)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO items (list_id, url, title, description, thumbnail_url, video_url, source_type, metadata, position)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *
     `;
 
@@ -48,8 +49,9 @@ export const addItem = async (req: Request, res: Response) => {
       metadata.title,
       metadata.description,
       metadata.thumbnail,
+      metadata.videoUrl,
       metadata.sourceType,
-      metadata.metadata ?? null,
+      toJsonbParam(metadata.metadata),
       nextPosition,
     ]);
 
@@ -88,6 +90,38 @@ export const getListItems = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error getting items:", error);
     return res.status(500).json({ error: "Failed to get items" });
+  }
+};
+
+export const getItemById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = getAuth(req);
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    await ensureUserExists(userId);
+
+    const result = await pool.query(
+      `
+        SELECT i.*
+        FROM items i
+        JOIN lists l ON i.list_id = l.id
+        WHERE i.id = $1 AND l.user_id = $2
+      `,
+      [id, userId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    return res.json({ item: result.rows[0] });
+  } catch (error) {
+    console.error("Error getting item:", error);
+    return res.status(500).json({ error: "Failed to get item" });
   }
 };
 

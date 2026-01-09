@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b893bf76-9363-49b2-92ea-dfd6fc2d4fa7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.codex/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/.codex/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.codex/backend-spec.md" beforeDir="false" afterPath="$PROJECT_DIR$/.codex/backend-spec.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/routes/items.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/routes/items.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/src/app/api/items/[id]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/api/items/[id]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/src/app/dashboard/lists/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/dashboard/lists/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/ui/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/ui/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/ui/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,12 +21,18 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="106" />
+    <option name="cachedIndexableFilesCount" value="275" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/imcharliesparks/listmaker.git",
+    "accountId": "30e0f491-5572-483f-a7fb-18685278d933"
+  }
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -47,7 +59,7 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;link-ingestion&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -89,6 +101,8 @@
       <workItem from="1767544686702" duration="5002000" />
       <workItem from="1767549855405" duration="3114000" />
       <workItem from="1767887645341" duration="339000" />
+      <workItem from="1767969494901" duration="1418000" />
+      <workItem from="1767972738624" duration="3432000" />
     </task>
     <servers />
   </component>

@@ -3,6 +3,7 @@ export interface UrlMetadata {
   title?: string;
   description?: string;
   thumbnail?: string;
+  videoUrl?: string;
   sourceType?: string;
   metadata?: unknown;
 }
