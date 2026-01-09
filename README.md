@@ -1,200 +1,146 @@
-# ListMaker - Modern listmaking application for keeping track of everything you love online.
+# ListMaker
 
-A full-stack list keeping platform built with Bun, Turborepo, Next.js 15, tRPC, Prisma, Clerk authentication, and an Express backend.
+Curate and organize the things you love online: save links into lists, enrich them with metadata, and optionally share lists publicly.
+
+This repo is a Bun + Turborepo monorepo with:
+- `apps/web`: Next.js 15 App Router web app (Clerk) + **BFF** API routes that proxy to the server
+- `apps/server`: Express REST API (Clerk) + PostgreSQL (via `pg` queries)
+- `apps/native`: Expo app (Clerk)
+- `packages/*`: shared code (Prisma schema/seed, UI primitives, list defaults, optional tRPC scaffold)
 
 ## Project Structure
 
 ```
 listmaker/
-├─ apps/
-│  ├─ web/             # Next.js 15 App Router BFF (Clerk auth, REST proxy to server)
-│  ├─ native/          # Expo app (Clerk)
-│  └─ server/          # Express REST API (Clerk, PostgreSQL)
-├─ packages/
-│  ├─ database/        # Prisma schema and client
-│  ├─ ui/              # Shared UI components (ShadCN-based)
-│  └─ shared/          # Shared types/constants (Lists, defaults, etc.)
-├─ package.json
-├─ turbo.json
-└─ README.md
+  apps/
+    web/        # Next.js 15 App Router + BFF proxy routes
+    server/     # Express REST API (Clerk + Postgres)
+    native/     # Expo app (Clerk)
+  packages/
+    database/   # Prisma schema/client + seed tooling
+    ui/         # Shared UI components (web)
+    shared/     # Shared types/defaults (e.g. DEFAULT_LISTS)
+    api/        # Minimal tRPC scaffolding (not the primary API)
+  turbo.json
+  package.json
+  .env.example
+  README.md
 ```
 
 ## Quick Start
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) v1.1.38 or higher
+- [Bun](https://bun.sh) `1.1.38+`
 - PostgreSQL database
-- [Clerk](https://clerk.com) account for authentication
+- [Clerk](https://clerk.com) keys (web/server/native)
 
-### 1. Install Dependencies
+### 1) Install
 
 ```bash
 bun install
 ```
 
-### 2. Environment Setup
+### 2) Environment
 
-Create a root `.env` file based on `.env.example`:
+Create a root `.env` (or `.env.local`) from `.env.example`.
+
+Minimum for local web + server:
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/listmaker?schema=public"
 
-# Clerk (web + server + native)
+# Clerk
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
 CLERK_PUBLISHABLE_KEY=pk_test_xxx
 CLERK_SECRET_KEY=sk_test_xxx
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
+
+# Clerk redirects (web)
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
-EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
+
+# Server + BFF proxy
+PORT=3001
+CORS_ORIGIN=http://localhost:3000
+SERVER_API_URL=http://localhost:3001
 ```
 
-### 3. Database Setup
+Notes:
+- The server loads env from repo root (prefers `.env.local`, then `.env`).
+- You can use either `DATABASE_URL` or discrete `DB_HOST`/`DB_PORT`/`DB_NAME`/`DB_USER`/`DB_PASSWORD` (see `.env.example`).
+
+### 3) Database (Prisma)
+
+Prisma is the schema source-of-truth and is used for generation/seed; the Express server uses `pg` (SQL queries) at runtime.
 
 ```bash
-# Generate Prisma client
 bun db:generate
-
-# Push schema to database
 bun db:push
-
-# Seed database with sample data
 bun db:seed
 ```
 
-### 3b. Playwright (Pinterest ingestion)
+### 4) Playwright (Pinterest ingestion)
+
+Pinterest ingestion can fall back to Playwright; install browser binaries once:
 
 ```bash
 bunx playwright install
 ```
 
-### 4. Run Development Servers
+### 5) Run
 
 ```bash
-# All apps
-bun dev
-
-# Web only
-bun dev:web
-
-# Web + server
+# Web + server (recommended for most work)
 bun dev:web:server
 
-# Native only
-bun dev:native
-
-# Native + server
-bun dev:native:server
-
-# Server only
-bun dev:server
+# Or everything
+bun dev
 ```
 
-The application will be available at:
-- **Web App**: http://localhost:3000 (BFF proxies to http://localhost:3001)
+Local URLs:
+- Web: `http://localhost:3000`
+- Server: `http://localhost:3001` (`GET /health`)
 
-## Available Scripts (root)
+## Architecture Notes
 
-- `bun dev` - Start all apps in development mode
-- `bun dev:web` - Start only the Next.js web app
-- `bun dev:web:server` - Start web + Express server together
-- `bun dev:native` - Start only the Expo native app
-- `bun dev:native:server` - Start native + Express server together
-- `bun dev:server` - Start only the Express server
-- `bun build` - Build all apps and packages
-- `bun lint` - Lint all packages
-- `bun type-check` - Type check all packages
-- `bun db:generate` - Generate Prisma client from `packages/database/prisma/schema.prisma`
-- `bun db:push` - Push schema to the database
-- `bun db:migrate` - Create and apply a local migration
-- `bun db:migrate:deploy` - Apply migrations in production
-- `bun db:studio` - Open Prisma Studio
-- `bun db:seed` - Seed the database
-- `bun db:reset` - Reset the database and re-apply migrations
+- **Web (BFF)**: The web app calls Next.js API routes under `apps/web/src/app/api/*`, which proxy requests to the Express server via `apps/web/src/lib/server-api.ts` and forward a Clerk session token.
+- **Server (REST)**: Express routes live under `apps/server/src/routes/*` and controllers under `apps/server/src/controllers/*`.
+- **Shared defaults**: Default list templates live in `packages/shared/src/lists.ts` and are created on the dashboard when a new user has zero lists.
+- **Ingestion**: Creating an ingestion job is async; jobs transition through `queued → processing → completed|failed` and only create an `Item` after metadata extraction succeeds (and media exists: thumbnail or video).
+- **Realtime (SSE)**: The web app includes an Edge runtime Server-Sent Events endpoint at `apps/web/src/app/api/realtime/events/route.ts` (heartbeat stream).
 
-## Features
+## REST API (Server)
 
-### Authentication
-- Clerk-based authentication across web, native, and server
-- Protected routes (dashboard)
-- Automatic user sync on first sign-in via `/api/auth/sync`
+The backend contract lives in `.codex/backend-spec.md` and is implemented in `apps/server`.
 
-### Lists
-- Default lists defined in `packages/shared/src/lists.ts` and created on first dashboard load if missing
-- Lists are clickable; detail pages fetch list + items via the BFF (`/api/lists/:id`, `/api/items/list/:listId`)
+Key endpoints:
+- `GET /health` (returns `{ status: "ok", timestamp: ... }`)
+- Auth: `POST /api/auth/sync`, `GET /api/auth/me`
+- Lists: `POST /api/lists`, `GET /api/lists`, `GET /api/lists/:id`, `PUT /api/lists/:id`, `DELETE /api/lists/:id`
+- Items: `POST /api/items`, `GET /api/items/list/:listId`, `DELETE /api/items/:id`
+- Ingestion: `POST /api/ingestions`, `GET /api/ingestions/:id`
 
-### Ingestion
-- Async ingestion jobs create items only after metadata extraction is complete
-- Pinterest is first-class (Playwright fallback); other sources use Open Graph
-- Items require URL and image or video
+## Scripts (root)
 
-### Database Models
-- **User**: Clerk ID, email (synced from Clerk), display name, profile photo
-- **List**: Title, description, privacy, cover image
-- **Item**: URL metadata, optional thumbnail/video URL, position, optional scraped fields
-- **IngestionJob**: URL ingestion status, source type, error, and linked item
+- Dev: `bun dev`, `bun dev:web`, `bun dev:web:server`, `bun dev:native`, `bun dev:native:server`, `bun dev:server`
+- Checks: `bun lint`, `bun type-check`, `bun build`
+- DB: `bun db:generate`, `bun db:push`, `bun db:migrate`, `bun db:migrate:deploy`, `bun db:seed`, `bun db:studio`, `bun db:reset`
 
-### API
-- Express REST backend for users, lists, and items (see backend docs in `docs/server-docs`)
-- Next.js API routes act as a BFF, proxying to the Express server with Clerk session tokens
+## Docs (Codex + Workflows)
 
-### UI Components
-- ShadCN-based components (Button, Card, etc.)
-- React Native Reusables for Native UI
-- Shared list types/defaults live in `packages/shared`
-
-## Tech Stack
-
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS v4
-- **Auth**: Clerk
-- **Database**: PostgreSQL + Prisma
-- **API**: Express REST backend (consumed via Next.js BFF)
-- **Serialization**: SuperJSON
-- **Package Manager**: Bun
-- **Monorepo**: Turborepo
-
-## Pages
-
-- `/` - Landing page with authentication
-- `/dashboard` - User dashboard with lists
-- `/dashboard/lists/[id]` - List detail (items)
-
-## Development Tips
-
-1. **Adding a new API route**: Follow the backend spec for users, lists, and items (see `docs/server-docs`)
-2. **Database changes**: Update `packages/database/prisma/schema.prisma`, then run `bun db:push`
-3. **New UI component**: Add to `packages/ui/src/components/`
-4. **Environment variables**: Add to `.env.example` at the repo root
+This repo keeps its internal “how we work” docs in `.codex/`:
+- `.codex/README.md` (routing map)
+- `.codex/repository-map.md` (key paths/entrypoints)
+- `.codex/backend-spec.md` (REST contract)
+- `.codex/usage-guide.md` (how to use the skills/agents/workflows)
+- `.codex/workflows/*` (env setup, local dev, DB, testing, release)
 
 ## Troubleshooting
 
-### Prisma Client Not Found
-```bash
-bun db:generate
-```
+- Prisma client not found: `bun db:generate`
+- Type errors: `bun type-check`
+- Server can’t reach DB: verify `DATABASE_URL` (or `DB_*` vars) and Postgres is running
 
-### Type Errors
-```bash
-bun type-check
-```
-
-### Database Connection Issues
-- Verify `DATABASE_URL` in the root `.env`
-- Ensure PostgreSQL is running
-- Check connection string format
-
-## License
-
-MIT
-
-## Contributing
-
-This is a monorepo setup - make sure to install dependencies at the root level using `bun install`.
-
-## Codex Usage Guide
-
-See `docs/codex-guide.md` for the Codex skills, agents, and workflows used in this repo.
