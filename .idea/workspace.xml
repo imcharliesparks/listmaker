@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b893bf76-9363-49b2-92ea-dfd6fc2d4fa7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/authController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/authController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/listsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/listsController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/server/src/middleware/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/middleware/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/src/app/dashboard/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/dashboard/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/config/database.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/config/database.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/next.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="106" />
+    <option name="cachedIndexableFilesCount" value="210" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -36,6 +33,9 @@
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/apps/web/package.json" />
     <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
