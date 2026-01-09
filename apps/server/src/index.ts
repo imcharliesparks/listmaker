@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { clerkMiddleware } from "@clerk/express";
 import authRoutes from "./routes/auth.js";
+import ingestionsRoutes from "./routes/ingestions.js";
 import itemsRoutes from "./routes/items.js";
 import listsRoutes from "./routes/lists.js";
 
@@ -45,6 +46,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/ingestions", ingestionsRoutes);
 app.use("/api/lists", listsRoutes);
 app.use("/api/items", itemsRoutes);
 

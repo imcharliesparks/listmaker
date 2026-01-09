@@ -37,8 +37,8 @@ export const addItem = async (req: Request, res: Response) => {
     const nextPosition = positionResult.rows[0].next_position;
 
     const query = `
-      INSERT INTO items (list_id, url, title, description, thumbnail_url, source_type, metadata, position)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO items (list_id, url, title, description, thumbnail_url, video_url, source_type, metadata, position)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *
     `;
 
@@ -48,6 +48,7 @@ export const addItem = async (req: Request, res: Response) => {
       metadata.title,
       metadata.description,
       metadata.thumbnail,
+      metadata.videoUrl,
       metadata.sourceType,
       metadata.metadata ?? null,
       nextPosition,

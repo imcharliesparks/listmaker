@@ -16,6 +16,13 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
+    "db:generate": "bunx prisma generate --schema packages/database/prisma/schema.prisma",
+    "db:push": "bunx prisma db push --schema packages/database/prisma/schema.prisma",
+    "db:migrate": "bunx prisma migrate dev --schema packages/database/prisma/schema.prisma",
+    "db:migrate:deploy": "bunx prisma migrate deploy --schema packages/database/prisma/schema.prisma",
+    "db:studio": "bunx prisma studio --schema packages/database/prisma/schema.prisma",
+    "db:seed": "bunx prisma db seed --schema packages/database/prisma/schema.prisma",
+    "db:reset": "bunx prisma migrate reset --schema packages/database/prisma/schema.prisma",
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
