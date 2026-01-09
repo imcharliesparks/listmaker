@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Listmaker",
-    "slug": "Listmaker",
+    "name": "native",
+    "slug": "native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "Listmaker",
+    "scheme": "native",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {

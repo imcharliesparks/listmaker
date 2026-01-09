@@ -5,7 +5,7 @@ This is a [React Native](https://reactnative.dev) project built with [Expo](http
 It was initialized using the following command:
 
 ```bash
-npx @react-native-reusables/cli@latest init -t Listmaker
+npx @react-native-reusables/cli@latest init -t native
 ```
 
 ## Getting Started
