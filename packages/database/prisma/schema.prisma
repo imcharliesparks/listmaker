@@ -10,109 +10,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
 model User {
-  id        String   @id @default(cuid())
-  clerkId   String   @unique
-  email     String   @unique
-  username  String?
-  role      UserRole @default(USER)
-  balance   Int      @default(10000) // Starting chips
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @db.VarChar(128)
+  email       String   @unique @db.VarChar(255)
+  displayName String?  @map("display_name") @db.VarChar(255)
+  photoUrl    String?  @map("photo_url") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  bets         Bet[]
-  transactions Transaction[]
+  lists List[]
 
-  @@index([clerkId])
   @@index([email])
+  @@map("users")
 }
 
-enum MatchStatus {
-  UPCOMING
-  LIVE
-  FINISHED
-  CANCELLED
+model List {
+  id          Int      @id @default(autoincrement())
+  userId      String   @map("user_id") @db.VarChar(128)
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  isPublic    Boolean  @default(false) @map("is_public")
+  coverImage  String?  @map("cover_image") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items Item[]
+
+  @@index([userId], map: "idx_lists_user_id")
+  @@map("lists")
 }
 
-model Match {
-  id          String       @id @default(cuid())
-  name        String
-  description String?
-  homeTeam    String
-  awayTeam    String
-  startTime   DateTime
-  status      MatchStatus  @default(UPCOMING)
-  homeOdds    Float        @default(2.0)
-  awayOdds    Float        @default(2.0)
-  drawOdds    Float?
-  result      String?      // e.g., "HOME", "AWAY", "DRAW"
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+model Item {
+  id           Int      @id @default(autoincrement())
+  listId       Int      @map("list_id")
+  url          String   @db.Text
+  title        String?  @db.VarChar(500)
+  description  String?  @db.Text
+  thumbnailUrl String?  @map("thumbnail_url") @db.Text
+  sourceType   String?  @map("source_type") @db.VarChar(50)
+  metadata     Json?    @db.JsonB
+  position     Int      @default(0)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  bets Bet[]
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
 
-  @@index([status])
-  @@index([startTime])
-}
-
-enum BetStatus {
-  PENDING
-  WON
-  LOST
-  CANCELLED
-  REFUNDED
-}
-
-enum BetOutcome {
-  HOME
-  AWAY
-  DRAW
-}
-
-model Bet {
-  id        String     @id @default(cuid())
-  userId    String
-  matchId   String
-  amount    Int
-  odds      Float
-  outcome   BetOutcome
-  status    BetStatus  @default(PENDING)
-  payout    Int?       // Calculated payout if won
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-
-  user  User  @relation(fields: [userId], references: [id])
-  match Match @relation(fields: [matchId], references: [id])
-
-  @@index([userId])
-  @@index([matchId])
-  @@index([status])
-}
-
-enum TransactionType {
-  DEPOSIT
-  WITHDRAWAL
-  BET_PLACED
-  BET_WON
-  BET_REFUND
-}
-
-model Transaction {
-  id        String          @id @default(cuid())
-  userId    String
-  type      TransactionType
-  amount    Int
-  balance   Int             // Balance after transaction
-  reference String?         // e.g., betId
-  createdAt DateTime        @default(now())
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@index([userId])
-  @@index([createdAt])
+  @@index([listId], map: "idx_items_list_id")
+  @@index([sourceType], map: "idx_items_source_type")
+  @@map("items")
 }

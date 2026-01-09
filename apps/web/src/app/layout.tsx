@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ListMaker - Betting Platform",
-  description: "A modern betting platform built with Next.js, tRPC, and Prisma",
+  title: "ListMaker",
+  description: "A modern listmaking platform built with Next.js, tRPC, and Prisma",
 };
 
 export default function RootLayout({
