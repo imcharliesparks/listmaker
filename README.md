@@ -176,3 +176,7 @@ MIT
 ## Contributing
 
 This is a monorepo setup - make sure to install dependencies at the root level using `bun install`.
+
+## Codex Usage Guide
+
+See `docs/codex-guide.md` for the Codex skills, agents, and workflows used in this repo.
