@@ -23,7 +23,11 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@repo/shared/*": ["../../packages/shared/src/*"],
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "**/*.ts",

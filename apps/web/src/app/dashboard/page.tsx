@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { DEFAULT_LISTS, type List } from "@/lib/lists";
+import { DEFAULT_LISTS, type List } from "@repo/shared/lists";
 
 async function syncUser(displayName?: string | null, photoUrl?: string | null) {
   await fetch("/api/auth/sync", {
@@ -115,12 +116,16 @@ export default function DashboardPage() {
         {!loading && lists.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {lists.map((list) => (
-              <div key={list.id} className="rounded-lg border bg-card p-4 shadow-sm">
+              <Link
+                key={list.id}
+                href={`/dashboard/lists/${list.id}`}
+                className="block rounded-lg border bg-card p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              >
                 <h2 className="text-lg font-semibold">{list.title}</h2>
                 {list.description ? (
                   <p className="mt-1 text-sm text-muted-foreground">{list.description}</p>
                 ) : null}
-              </div>
+              </Link>
             ))}
           </div>
         )}

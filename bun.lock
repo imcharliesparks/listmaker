@@ -138,6 +138,10 @@
         "typescript": "^5.6.3",
       },
     },
+    "packages/shared": {
+      "name": "@repo/shared",
+      "version": "0.0.0",
+    },
     "packages/ui": {
       "name": "@repo/ui",
       "version": "0.0.0",
@@ -782,6 +786,8 @@
     "@repo/api": ["@repo/api@workspace:packages/api"],
 
     "@repo/database": ["@repo/database@workspace:packages/database"],
+
+    "@repo/shared": ["@repo/shared@workspace:packages/shared"],
 
     "@repo/ui": ["@repo/ui@workspace:packages/ui"],
 

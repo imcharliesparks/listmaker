@@ -1,0 +1,9 @@
+{
+  "name": "@repo/shared",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./lists": "./src/lists.ts"
+  },
+  "types": "./src/index.d.ts"
+}

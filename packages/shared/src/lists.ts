@@ -3,6 +3,7 @@ export type List = {
   title: string;
   description?: string | null;
   is_public?: boolean;
+  cover_image?: string | null;
   created_at?: string;
   updated_at?: string;
 };
