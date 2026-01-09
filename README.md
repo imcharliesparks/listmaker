@@ -64,6 +64,12 @@ bun db:push
 bun db:seed
 ```
 
+### 3b. Playwright (Pinterest ingestion)
+
+```bash
+bunx playwright install
+```
+
 ### 4. Run Development Servers
 
 ```bash
@@ -100,6 +106,13 @@ The application will be available at:
 - `bun build` - Build all apps and packages
 - `bun lint` - Lint all packages
 - `bun type-check` - Type check all packages
+- `bun db:generate` - Generate Prisma client from `packages/database/prisma/schema.prisma`
+- `bun db:push` - Push schema to the database
+- `bun db:migrate` - Create and apply a local migration
+- `bun db:migrate:deploy` - Apply migrations in production
+- `bun db:studio` - Open Prisma Studio
+- `bun db:seed` - Seed the database
+- `bun db:reset` - Reset the database and re-apply migrations
 
 ## Features
 
@@ -112,10 +125,16 @@ The application will be available at:
 - Default lists defined in `packages/shared/src/lists.ts` and created on first dashboard load if missing
 - Lists are clickable; detail pages fetch list + items via the BFF (`/api/lists/:id`, `/api/items/list/:listId`)
 
+### Ingestion
+- Async ingestion jobs create items only after metadata extraction is complete
+- Pinterest is first-class (Playwright fallback); other sources use Open Graph
+- Items require URL and image or video
+
 ### Database Models
 - **User**: Clerk ID, email (synced from Clerk), display name, profile photo
 - **List**: Title, description, privacy, cover image
-- **Item**: URL metadata, position, optional scraped fields
+- **Item**: URL metadata, optional thumbnail/video URL, position, optional scraped fields
+- **IngestionJob**: URL ingestion status, source type, error, and linked item
 
 ### API
 - Express REST backend for users, lists, and items (see backend docs in `docs/server-docs`)
@@ -155,7 +174,6 @@ The application will be available at:
 
 ### Prisma Client Not Found
 ```bash
-cd packages/database
 bun db:generate
 ```
 

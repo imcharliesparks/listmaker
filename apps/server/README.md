@@ -25,8 +25,10 @@ Uses root `.env`:
 - Auth: `POST /api/auth/sync`, `GET /api/auth/me`
 - Lists: `POST /api/lists`, `GET /api/lists`, `GET /api/lists/:id`, `PUT /api/lists/:id`, `DELETE /api/lists/:id`
 - Items: `POST /api/items`, `GET /api/items/list/:listId`, `DELETE /api/items/:id`
+- Ingestion: `POST /api/ingestions`, `GET /api/ingestions/:id`
 
 ## Notes
 
 - `packages/shared` contains shared list types and default lists used by web/native.
 - The web app calls the server via Next.js API routes (BFF), forwarding Clerk session tokens. Ensure server and web run together via `bun dev:web:server` in local dev.
+- Pinterest ingestion uses Playwright; install browsers with `bunx playwright install`.
