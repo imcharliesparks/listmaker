@@ -4,7 +4,36 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": [
+        "DATABASE_URL",
+        "DATABASE_URL_UNPOOLED",
+        "PGUSER",
+        "PGPASSWORD",
+        "DB_HOST",
+        "DB_PORT",
+        "DB_NAME",
+        "DB_USER",
+        "DB_PASSWORD",
+        "DB_SSL",
+        "NODE_ENV",
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "CLERK_SECRET_KEY",
+        "CLERK_PUBLISHABLE_KEY",
+        "NEXT_PUBLIC_CLERK_SIGN_IN_URL",
+        "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
+        "NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL",
+        "NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "PORT",
+        "CORS_ORIGIN",
+        "DISABLE_HELMET",
+        "SERVER_API_URL",
+        "JET_LOGGER_MODE",
+        "JET_LOGGER_FILEPATH",
+        "JET_LOGGER_TIMESTAMP",
+        "JET_LOGGER_FORMAT"
+      ]
     },
     "dev": {
       "cache": false,

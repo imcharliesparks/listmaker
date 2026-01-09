@@ -58,6 +58,10 @@ Or scan the QR code with the [Expo Go](https://expo.dev/go) app to test on your 
 - 🔥 Edge to Edge enabled
 - 📱 Runs on iOS, Android, and Web
 
+## Shared Types
+
+- Shared list types/defaults live in `packages/shared` alongside web/server
+
 ## Learn More
 
 - [Clerk Docs](https://go.clerk.com/Q1MKAz0)

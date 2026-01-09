@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b893bf76-9363-49b2-92ea-dfd6fc2d4fa7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/native/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/native/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/native/components/sign-in-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/components/sign-in-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/native/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/config/database.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/config/database.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/next.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="106" />
+    <option name="cachedIndexableFilesCount" value="210" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -39,6 +34,9 @@
     <dismissed value="$PROJECT_DIR$/apps/web/package.json" />
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -47,28 +45,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;init-expo-app&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Razor&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Charlie\\Documents\\Repos\\Web\\listmaker\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "add-server",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.preferred.runtime.type.id": "node",
+    "last_opened_file_path": "C:/Users/Charlie/Documents/Repos/Web/listmaker/docs/server-docs",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Razor",
+    "ts.external.directory.path": "C:\\Users\\Charlie\\Documents\\Repos\\Web\\listmaker\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1769796020799" />
     <option name="spentUsd" value="0.02036575" />
@@ -77,6 +76,9 @@
     <option name="suspendCountdown" value="9" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Charlie\Documents\Repos\Web\listmaker\docs\server-docs" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Charlie\Documents\Repos\Web\listmaker\apps\native" />
     </key>
