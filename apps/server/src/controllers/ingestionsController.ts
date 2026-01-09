@@ -30,8 +30,8 @@ export const createIngestionJob = async (req: Request, res: Response) => {
 
     const insertResult = await pool.query(
       `
-        INSERT INTO ingestion_jobs (list_id, user_id, url, status)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO ingestion_jobs (list_id, user_id, url, status, updated_at)
+        VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)
         RETURNING id, status
       `,
       [listId, userId, url, "queued"],

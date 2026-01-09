@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import type { List } from "@repo/shared/lists";
+import { LinkIngestionForm } from "./link-ingestion-form";
 
 type Item = {
   id: number;
@@ -64,6 +65,8 @@ export default async function ListDetailPage({
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-4">
+        <LinkIngestionForm listId={listId} />
+
         {items.length === 0 ? (
           <div className="rounded-lg border bg-card p-6 text-sm text-muted-foreground">
             No items yet. Add one from the app.

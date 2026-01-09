@@ -3,6 +3,7 @@ import { getAuth } from "@clerk/express";
 import pool from "../config/database.js";
 import urlMetadataService from "../services/urlMetadataService.js";
 import { ensureUserExists } from "../utils/ensureUser.js";
+import { toJsonbParam } from "../utils/toJsonbParam.js";
 
 export const addItem = async (req: Request, res: Response) => {
   try {
@@ -50,7 +51,7 @@ export const addItem = async (req: Request, res: Response) => {
       metadata.thumbnail,
       metadata.videoUrl,
       metadata.sourceType,
-      metadata.metadata ?? null,
+      toJsonbParam(metadata.metadata),
       nextPosition,
     ]);
 

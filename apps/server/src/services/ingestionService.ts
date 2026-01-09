@@ -1,5 +1,6 @@
 import pool from "../config/database.js";
 import urlMetadataService from "./urlMetadataService.js";
+import { toJsonbParam } from "../utils/toJsonbParam.js";
 
 const STATUS_QUEUED = "queued";
 const STATUS_PROCESSING = "processing";
@@ -63,7 +64,7 @@ export async function processIngestionJob(jobId: number) {
         metadata.thumbnail ?? null,
         metadata.videoUrl ?? null,
         metadata.sourceType ?? null,
-        metadata.metadata ?? null,
+        toJsonbParam(metadata.metadata),
         nextPosition,
       ],
     );
@@ -81,7 +82,7 @@ export async function processIngestionJob(jobId: number) {
             updated_at = CURRENT_TIMESTAMP
         WHERE id = $5
       `,
-      [STATUS_COMPLETED, metadata.sourceType ?? null, metadata.metadata ?? null, itemId, jobId],
+      [STATUS_COMPLETED, metadata.sourceType ?? null, toJsonbParam(metadata.metadata), itemId, jobId],
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Ingestion failed";
