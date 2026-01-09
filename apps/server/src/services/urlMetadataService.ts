@@ -3,7 +3,7 @@ import * as cheerio from "cheerio";
 import dns from "dns/promises";
 import ipaddr from "ipaddr.js";
 import net from "node:net";
-import { UrlMetadata } from "../types/index.js";
+import { UrlMetadata } from "./urlMetadataServiceTypes.js";
 
 const REQUEST_TIMEOUT = 10_000;
 

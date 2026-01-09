@@ -1,15 +1,18 @@
-import { Response } from "express";
+import { Request, Response } from "express";
+import { getAuth } from "@clerk/express";
 import pool from "../config/database.js";
-import { AuthRequest } from "../types/index.js";
+import { ensureUserExists } from "../utils/ensureUser.js";
 
-export const createList = async (req: AuthRequest, res: Response) => {
+export const createList = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { title, description, isPublic } = req.body || {};
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
+
+    await ensureUserExists(userId);
 
     if (!title || typeof title !== "string" || title.trim().length === 0) {
       return res.status(400).json({ error: "Title is required" });
@@ -22,7 +25,7 @@ export const createList = async (req: AuthRequest, res: Response) => {
     `;
 
     const result = await pool.query(query, [
-      uid,
+      userId,
       title.trim(),
       description,
       Boolean(isPublic),
@@ -35,14 +38,15 @@ export const createList = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getUserLists = async (req: AuthRequest, res: Response) => {
+export const getUserLists = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    await ensureUserExists(userId);
     const query = `
       SELECT l.*, COUNT(i.id) as item_count
       FROM lists l
@@ -52,7 +56,7 @@ export const getUserLists = async (req: AuthRequest, res: Response) => {
       ORDER BY l.created_at DESC
     `;
 
-    const result = await pool.query(query, [uid]);
+    const result = await pool.query(query, [userId]);
 
     return res.json({ lists: result.rows });
   } catch (error) {
@@ -61,21 +65,22 @@ export const getUserLists = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getListById = async (req: AuthRequest, res: Response) => {
+export const getListById = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { id } = req.params;
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    await ensureUserExists(userId);
     const query = `
       SELECT * FROM lists 
       WHERE id = $1 AND user_id = $2
     `;
 
-    const result = await pool.query(query, [id, uid]);
+    const result = await pool.query(query, [id, userId]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "List not found" });
@@ -88,16 +93,17 @@ export const getListById = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateList = async (req: AuthRequest, res: Response) => {
+export const updateList = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { id } = req.params;
     const { title, description, isPublic } = req.body || {};
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    await ensureUserExists(userId);
     const query = `
       UPDATE lists 
       SET title = COALESCE($1, title),
@@ -112,7 +118,7 @@ export const updateList = async (req: AuthRequest, res: Response) => {
       description ?? null,
       typeof isPublic === "boolean" ? isPublic : null,
       id,
-      uid,
+      userId,
     ]);
 
     if (result.rows.length === 0) {
@@ -126,18 +132,19 @@ export const updateList = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteList = async (req: AuthRequest, res: Response) => {
+export const deleteList = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { id } = req.params;
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    await ensureUserExists(userId);
     const result = await pool.query(
       "DELETE FROM lists WHERE id = $1 AND user_id = $2 RETURNING *",
-      [id, uid],
+      [id, userId],
     );
 
     if (result.rows.length === 0) {

@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b893bf76-9363-49b2-92ea-dfd6fc2d4fa7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docs/server-docs/CLAUDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/server-docs/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/server-docs/backend-specs.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/authController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/authController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/listsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/listsController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/server/src/middleware/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/middleware/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/src/app/dashboard/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/dashboard/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

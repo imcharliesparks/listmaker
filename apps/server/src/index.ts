@@ -2,9 +2,20 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { clerkMiddleware } from "@clerk/express";
 import authRoutes from "./routes/auth.js";
 import itemsRoutes from "./routes/items.js";
 import listsRoutes from "./routes/lists.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load env from repo root (cwd is apps/server during turbo)
+dotenv.config({ path: path.resolve(__dirname, "../../../.env.local") });
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+dotenv.config(); // fallback to package-local .env if present
 
 dotenv.config();
 
@@ -15,6 +26,7 @@ const corsOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
   : undefined;
 
+app.use(clerkMiddleware());
 app.use(
   cors({
     origin: corsOrigins || true,

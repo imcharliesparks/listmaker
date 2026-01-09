@@ -1,14 +1,26 @@
-import { Response } from "express";
+import { Request, Response } from "express";
+import { clerkClient, getAuth } from "@clerk/express";
 import pool from "../config/database.js";
-import { AuthRequest } from "../types/index.js";
 
-export const syncUser = async (req: AuthRequest, res: Response) => {
+export const syncUser = async (req: Request, res: Response) => {
   try {
-    const { uid, email } = req.user || {};
+    const { userId } = getAuth(req);
     const { displayName, photoUrl } = req.body || {};
 
-    if (!uid || !email) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    // Fetch email from Clerk to ensure we always have a primary email
+    const clerkUser = await clerkClient.users.getUser(userId);
+    const primaryEmail = clerkUser.emailAddresses.find(
+      (addr) => addr.id === clerkUser.primaryEmailAddressId,
+    )?.emailAddress;
+    const fallbackEmail = clerkUser.emailAddresses[0]?.emailAddress;
+    const email = primaryEmail || fallbackEmail;
+
+    if (!email) {
+      return res.status(400).json({ error: "User email not available" });
     }
 
     const query = `
@@ -23,7 +35,7 @@ export const syncUser = async (req: AuthRequest, res: Response) => {
       RETURNING *
     `;
 
-    const result = await pool.query(query, [uid, email, displayName, photoUrl]);
+    const result = await pool.query(query, [userId, email, displayName, photoUrl]);
 
     return res.json({ user: result.rows[0] });
   } catch (error) {
@@ -32,15 +44,15 @@ export const syncUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getCurrentUser = async (req: AuthRequest, res: Response) => {
+export const getCurrentUser = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const result = await pool.query("SELECT * FROM users WHERE id = $1", [uid]);
+    const result = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });

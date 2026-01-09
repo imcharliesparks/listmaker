@@ -1,16 +1,19 @@
-import { Response } from "express";
+import { Request, Response } from "express";
+import { getAuth } from "@clerk/express";
 import pool from "../config/database.js";
 import urlMetadataService from "../services/urlMetadataService.js";
-import { AuthRequest } from "../types/index.js";
+import { ensureUserExists } from "../utils/ensureUser.js";
 
-export const addItem = async (req: AuthRequest, res: Response) => {
+export const addItem = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { listId, url } = req.body || {};
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
+
+    await ensureUserExists(userId);
 
     if (!listId || !url) {
       return res.status(400).json({ error: "List ID and URL are required" });
@@ -18,7 +21,7 @@ export const addItem = async (req: AuthRequest, res: Response) => {
 
     const listCheck = await pool.query(
       "SELECT * FROM lists WHERE id = $1 AND user_id = $2",
-      [listId, uid],
+      [listId, userId],
     );
 
     if (listCheck.rows.length === 0) {
@@ -57,18 +60,19 @@ export const addItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getListItems = async (req: AuthRequest, res: Response) => {
+export const getListItems = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { listId } = req.params;
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    await ensureUserExists(userId);
     const listCheck = await pool.query(
       "SELECT * FROM lists WHERE id = $1 AND user_id = $2",
-      [listId, uid],
+      [listId, userId],
     );
 
     if (listCheck.rows.length === 0) {
@@ -87,22 +91,23 @@ export const getListItems = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteItem = async (req: AuthRequest, res: Response) => {
+export const deleteItem = async (req: Request, res: Response) => {
   try {
-    const { uid } = req.user || {};
+    const { userId } = getAuth(req);
     const { id } = req.params;
 
-    if (!uid) {
+    if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    await ensureUserExists(userId);
     const itemCheck = await pool.query(
       `
        SELECT i.* FROM items i 
        JOIN lists l ON i.list_id = l.id 
        WHERE i.id = $1 AND l.user_id = $2
       `,
-      [id, uid],
+      [id, userId],
     );
 
     if (itemCheck.rows.length === 0) {
