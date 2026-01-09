@@ -27,13 +27,26 @@ const corsOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
   : undefined;
 
+const isDev = (process.env.NODE_ENV || "development") === "development";
+const devOriginRegex =
+  /^https?:\/\/(localhost|127\.0\.0\.1|10\.0\.2\.2)(:\d+)?$/;
+
+const corsOptions: cors.CorsOptions = {
+  origin(origin, callback) {
+    if (!origin) return callback(null, true); // native apps / curl
+    if (corsOrigins?.includes(origin)) return callback(null, true);
+    if (isDev && devOriginRegex.test(origin)) return callback(null, true);
+    return callback(null, false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(clerkMiddleware());
-app.use(
-  cors({
-    origin: corsOrigins || true,
-    credentials: true,
-  }),
-);
 
 app.use(express.json());
 
