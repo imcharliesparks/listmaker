@@ -93,6 +93,38 @@ export const getListItems = async (req: Request, res: Response) => {
   }
 };
 
+export const getItemById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = getAuth(req);
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    await ensureUserExists(userId);
+
+    const result = await pool.query(
+      `
+        SELECT i.*
+        FROM items i
+        JOIN lists l ON i.list_id = l.id
+        WHERE i.id = $1 AND l.user_id = $2
+      `,
+      [id, userId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    return res.json({ item: result.rows[0] });
+  } catch (error) {
+    console.error("Error getting item:", error);
+    return res.status(500).json({ error: "Failed to get item" });
+  }
+};
+
 export const deleteItem = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);

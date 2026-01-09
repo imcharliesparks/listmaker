@@ -1,12 +1,16 @@
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import type { List } from "@repo/shared/lists";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
 import { LinkIngestionForm } from "./link-ingestion-form";
+import { ImageLightbox } from "@/components/image-lightbox";
 
 type Item = {
   id: number;
   title?: string | null;
   description?: string | null;
+  thumbnail_url?: string | null;
+  video_url?: string | null;
   url: string;
   source_type?: string | null;
 };
@@ -26,7 +30,8 @@ export default async function ListDetailPage({
 }) {
   const { id: listId } = await params;
 
-  const cookieHeader = cookies().toString();
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
   const hdrs = await headers();
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "http";
@@ -72,24 +77,63 @@ export default async function ListDetailPage({
             No items yet. Add one from the app.
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
-              <div key={item.id} className="rounded-lg border bg-card p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h2 className="text-base font-semibold">{item.title || item.url}</h2>
-                    {item.description ? (
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
-                    ) : null}
-                    <p className="mt-1 text-xs text-muted-foreground break-all">{item.url}</p>
-                  </div>
-                  {item.source_type ? (
-                    <span className="rounded-full bg-secondary px-2 py-1 text-xs text-secondary-foreground">
-                      {item.source_type}
-                    </span>
-                  ) : null}
+              <Card key={item.id} className="overflow-hidden">
+                <div className="bg-muted">
+                  {item.thumbnail_url ? (
+                    <ImageLightbox
+                      images={[
+                        {
+                          src: item.thumbnail_url,
+                          alt: item.title || "Saved link preview",
+                        },
+                      ]}
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                  ) : (
+                    <div className="aspect-[4/3] w-full" />
+                  )}
                 </div>
-              </div>
+
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <CardTitle className="text-base leading-snug">
+                      <Link href={`/dashboard/items/${item.id}`} className="hover:underline underline-offset-4">
+                        {item.title || item.url}
+                      </Link>
+                    </CardTitle>
+                    {item.source_type ? (
+                      <span className="shrink-0 rounded-full bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                        {item.source_type}
+                      </span>
+                    ) : null}
+                  </div>
+                </CardHeader>
+
+                <CardContent className="space-y-2">
+                  {item.description ? (
+                    <p className="text-sm text-muted-foreground line-clamp-3">
+                      {item.description}
+                    </p>
+                  ) : null}
+
+                  {item.video_url ? (
+                    <a
+                      href={item.video_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs text-primary underline underline-offset-4"
+                    >
+                      View video
+                    </a>
+                  ) : null}
+
+                  <p className="text-xs text-muted-foreground break-all">
+                    {item.url}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
