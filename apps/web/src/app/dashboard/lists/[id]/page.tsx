@@ -1,9 +1,10 @@
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import type { List } from "@repo/shared/lists";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
 import { LinkIngestionForm } from "./link-ingestion-form";
 import { ImageLightbox } from "@/components/image-lightbox";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Item = {
   id: number;
@@ -89,7 +90,7 @@ export default async function ListDetailPage({
                           alt: item.title || "Saved link preview",
                         },
                       ]}
-                      className="aspect-[4/3] w-full object-cover"
+                      className="aspect-[4/3] w-full object-cover object-top"
                     />
                   ) : (
                     <div className="aspect-[4/3] w-full" />
@@ -104,9 +105,9 @@ export default async function ListDetailPage({
                       </Link>
                     </CardTitle>
                     {item.source_type ? (
-                      <span className="shrink-0 rounded-full bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                      <Badge variant="secondary" className="shrink-0">
                         {item.source_type}
-                      </span>
+                      </Badge>
                     ) : null}
                   </div>
                 </CardHeader>

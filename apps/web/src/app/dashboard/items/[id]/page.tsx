@@ -1,7 +1,9 @@
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@repo/ui";
 import { ImageLightbox } from "@/components/image-lightbox";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Item = {
   id: number;
@@ -83,7 +85,7 @@ export default async function ItemDetailPage({
                     alt: item.title || "Saved link preview",
                   },
                 ]}
-                className="aspect-[16/9] w-full object-cover"
+                className="aspect-[16/9] w-full object-cover object-top"
               />
             ) : (
               <div className="aspect-[16/9] w-full" />
@@ -94,9 +96,9 @@ export default async function ItemDetailPage({
             <div className="flex items-start justify-between gap-3">
               <CardTitle className="text-lg leading-snug">{item.title || item.url}</CardTitle>
               {item.source_type ? (
-                <span className="shrink-0 rounded-full bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                <Badge variant="secondary" className="shrink-0">
                   {item.source_type}
-                </span>
+                </Badge>
               ) : null}
             </div>
           </CardHeader>

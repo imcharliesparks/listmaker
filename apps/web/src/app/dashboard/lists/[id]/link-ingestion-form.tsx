@@ -2,7 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { Button, Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
+import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type IngestionCreateResponse = {
   jobId: number;
@@ -116,11 +119,10 @@ export function LinkIngestionForm({ listId }: { listId: string }) {
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <input
+          <Input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Paste a URL (Pinterest, YouTube, etc.)"
-            className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             inputMode="url"
             autoCapitalize="none"
             autoCorrect="off"
@@ -139,9 +141,9 @@ export function LinkIngestionForm({ listId }: { listId: string }) {
         ) : null}
 
         {error ? (
-          <p className="mt-3 text-sm text-red-700">
-            {error}
-          </p>
+          <Alert variant="destructive" className="mt-3">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         ) : null}
       </CardContent>
     </Card>

@@ -14,19 +14,18 @@
     "isolatedModules": true,
     "incremental": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@repo/shared/*": ["../../packages/shared/src/*"],
-      "@/*": ["./src/*"]
+      "@repo/shared/*": [
+        "../../packages/shared/src/*"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [

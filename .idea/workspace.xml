@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="b893bf76-9363-49b2-92ea-dfd6fc2d4fa7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/itemsController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/server/src/routes/items.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/routes/items.ts" afterDir="false" />
@@ -15,6 +16,9 @@
       <change beforePath="$PROJECT_DIR$/packages/ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/ui/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/ui/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/ui/src/index.ts" afterDir="false" />
     </list>
+=======
+    <list default="true" id="b893bf76-9363-49b2-92ea-dfd6fc2d4fa7" name="Changes" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,8 +105,12 @@
       <workItem from="1767544686702" duration="5002000" />
       <workItem from="1767549855405" duration="3114000" />
       <workItem from="1767887645341" duration="339000" />
+<<<<<<< Updated upstream
       <workItem from="1767969494901" duration="1418000" />
       <workItem from="1767972738624" duration="3432000" />
+=======
+      <workItem from="1767969494901" duration="1723000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
