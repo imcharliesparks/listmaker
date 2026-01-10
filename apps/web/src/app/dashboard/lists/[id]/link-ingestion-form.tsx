@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { Button, Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type IngestionCreateResponse = {
   jobId: number;

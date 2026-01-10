@@ -1,8 +1,9 @@
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@repo/ui";
 import { ImageLightbox } from "@/components/image-lightbox";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Item = {
   id: number;
@@ -84,7 +85,7 @@ export default async function ItemDetailPage({
                     alt: item.title || "Saved link preview",
                   },
                 ]}
-                className="aspect-[16/9] w-full object-cover"
+                className="aspect-[16/9] w-full object-cover object-top"
               />
             ) : (
               <div className="aspect-[16/9] w-full" />
