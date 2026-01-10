@@ -1,11 +1,12 @@
 import '@/global.css';
 
 import { NAV_THEME } from '@/lib/theme';
+import { ShareIntentProvider, useShareIntentState } from '@/lib/share-intent-provider';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
-import { Stack } from 'expo-router';
+import { router, Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
@@ -20,13 +21,15 @@ export default function RootLayout() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <ClerkProvider tokenCache={tokenCache} publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Routes />
-        <PortalHost />
-      </ThemeProvider>
-    </ClerkProvider>
+    <ShareIntentProvider>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+        <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <Routes />
+          <PortalHost />
+        </ThemeProvider>
+      </ClerkProvider>
+    </ShareIntentProvider>
   );
 }
 
@@ -34,12 +37,20 @@ SplashScreen.preventAutoHideAsync();
 
 function Routes() {
   const { isSignedIn, isLoaded } = useAuth();
+  const pathname = usePathname();
+  const { hasShareIntent } = useShareIntentState();
 
   React.useEffect(() => {
     if (isLoaded) {
       SplashScreen.hideAsync();
     }
   }, [isLoaded]);
+
+  React.useEffect(() => {
+    if (!hasShareIntent) return;
+    if (pathname === '/share') return;
+    router.push('/share');
+  }, [hasShareIntent, pathname]);
 
   if (!isLoaded) {
     return null;
@@ -59,6 +70,8 @@ function Routes() {
       <Stack.Protected guard={isSignedIn}>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
       </Stack.Protected>
+
+      <Stack.Screen name="share" options={{ title: 'Add item' }} />
 
       {/* Screens outside the guards are accessible to everyone (e.g. not found) */}
     </Stack>

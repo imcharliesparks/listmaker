@@ -8,6 +8,7 @@
     "ios": "expo start -c --ios",
     "web": "expo start -c --web",
     "clean": "rm -rf .expo node_modules",
+    "postinstall": "patch-package",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "expo": "~54.0.29",
     "expo-auth-session": "~7.0.10",
     "expo-constants": "~18.0.12",
+    "expo-share-intent": "^5.1.1",
     "expo-linking": "~8.0.10",
     "expo-router": "~6.0.19",
     "expo-secure-store": "~15.0.8",
@@ -50,6 +52,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "dotenv": "^16.4.7",
+    "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "~5.9.2"
