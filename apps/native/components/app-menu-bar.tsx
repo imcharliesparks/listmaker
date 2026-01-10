@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { Link, usePathname } from 'expo-router';
-import { HomeIcon, ListIcon, type LucideIcon } from 'lucide-react-native';
+import { HomeIcon, ListIcon, PlusIcon, type LucideIcon } from 'lucide-react-native';
 import * as React from 'react';
 import { View } from 'react-native';
 
@@ -25,6 +25,12 @@ const MENU_ITEMS: MenuItem[] = [
     label: 'Lists',
     icon: ListIcon,
     isActive: (pathname) => pathname.startsWith('/lists'),
+  },
+  {
+    href: '/share',
+    label: 'Share',
+    icon: PlusIcon,
+    isActive: (pathname) => pathname.startsWith('/share'),
   },
 ];
 

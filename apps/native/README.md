@@ -62,6 +62,16 @@ Or scan the QR code with the [Expo Go](https://expo.dev/go) app to test on your 
 
 - Shared list types/defaults live in `packages/shared` alongside web/server
 
+## Share to Listmaker (iOS/Android)
+
+This app supports receiving shared links via `expo-share-intent` and opens a dedicated `/share` screen to save them to a list.
+
+- Share-intent requires a custom dev client (it will not work in Expo Go).
+- After installing deps, rebuild native projects:
+  - `expo prebuild --no-install --clean`
+  - `expo run:android` / `expo run:ios`
+- Manual check: share an `https://...` URL from Chrome/Safari → select Listmaker → pick a list → “Save to list” → confirm item appears in that list.
+
 ## Learn More
 
 - [Clerk Docs](https://go.clerk.com/Q1MKAz0)
