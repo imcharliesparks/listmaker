@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { DEFAULT_LISTS, type List } from "@repo/shared/lists";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 async function syncUser(displayName?: string | null, photoUrl?: string | null) {
   await fetch("/api/auth/sync", {
@@ -102,9 +103,9 @@ export default function DashboardPage() {
         )}
 
         {error && (
-          <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700">
-            {error}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         )}
 
         {!loading && !error && lists.length === 0 && (

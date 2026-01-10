@@ -4,6 +4,7 @@ import type { List } from "@repo/shared/lists";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
 import { LinkIngestionForm } from "./link-ingestion-form";
 import { ImageLightbox } from "@/components/image-lightbox";
+import { Badge } from "@/components/ui/badge";
 
 type Item = {
   id: number;
@@ -104,9 +105,9 @@ export default async function ListDetailPage({
                       </Link>
                     </CardTitle>
                     {item.source_type ? (
-                      <span className="shrink-0 rounded-full bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                      <Badge variant="secondary" className="shrink-0">
                         {item.source_type}
-                      </span>
+                      </Badge>
                     ) : null}
                   </div>
                 </CardHeader>
